@@ -35,11 +35,14 @@
 
 # Add source files.
 set(NUMERICALINTEGRATORS_SOURCES
+  "${SRCROOT}${MATHEMATICSDIR}/NumericalIntegrators/bulirschStoerRationalFunctionSequences.cpp"
   "${SRCROOT}${MATHEMATICSDIR}/NumericalIntegrators/rungeKuttaCoefficients.cpp"
 )
 
 # Add header files.
 set(NUMERICALINTEGRATORS_HEADERS 
+  "${SRCROOT}${MATHEMATICSDIR}/NumericalIntegrators/bulirschStoerVariableStepsizeIntegrator.h"
+  "${SRCROOT}${MATHEMATICSDIR}/NumericalIntegrators/bulirschStoerRationalFunctionSequences.h"
   "${SRCROOT}${MATHEMATICSDIR}/NumericalIntegrators/rungeKuttaVariableStepSizeIntegrator.h"
   "${SRCROOT}${MATHEMATICSDIR}/NumericalIntegrators/rungeKuttaCoefficients.h"
   "${SRCROOT}${MATHEMATICSDIR}/NumericalIntegrators/UnitTests/burdenAndFairesNumericalIntegratorTest.h"
@@ -52,6 +55,15 @@ setup_tudat_library_target(tudat_numerical_integrators
                            "${SRCROOT}${MATHEMATICSDIR}/NumericalIntegrators")
 
 # Add unit tests.
+# add_executable(test_BulirschStoerVariableStepSizeIntegrator 
+#                "${SRCROOT}${MATHEMATICSDIR}/NumericalIntegrators/UnitTests/unitTestBulirschStoerVariableStepSizeIntegrator.cpp")
+# setup_custom_test_program(test_BulirschStoerVariableStepSizeIntegrator 
+#                           "${SRCROOT}${MATHEMATICSDIR}/NumericalIntegrators")
+# target_link_libraries(test_BulirschStoerVariableStepSizeIntegrator 
+#                       tudat_numerical_integrators 
+#                       ${TUDAT_CORE_LIBRARIES} 
+#                       ${Boost_LIBRARIES})
+
 add_executable(test_RungeKuttaVariableStepSizeIntegrator 
                "${SRCROOT}${MATHEMATICSDIR}/NumericalIntegrators/UnitTests/unitTestRungeKuttaVariableStepSizeIntegrator.cpp")
 setup_custom_test_program(test_RungeKuttaVariableStepSizeIntegrator 
