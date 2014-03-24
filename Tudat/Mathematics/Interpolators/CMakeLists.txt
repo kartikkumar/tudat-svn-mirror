@@ -45,6 +45,7 @@ set(INTERPOLATORS_HEADERS
   "${SRCROOT}${MATHEMATICSDIR}/Interpolators/interpolator.h"
   "${SRCROOT}${MATHEMATICSDIR}/Interpolators/lookupScheme.h"
   "${SRCROOT}${MATHEMATICSDIR}/Interpolators/oneDimensionalInterpolator.h"
+  "${SRCROOT}${MATHEMATICSDIR}/Interpolators/lagrangeInterpolator.h"
   "${SRCROOT}${MATHEMATICSDIR}/Interpolators/multiLinearInterpolator.h"
 )
 
