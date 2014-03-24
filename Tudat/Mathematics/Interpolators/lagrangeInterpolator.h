@@ -49,17 +49,26 @@
 
 #include "Tudat/Mathematics/Interpolators/oneDimensionalInterpolator.h"
 #include "Tudat/Mathematics/Interpolators/cubicSplineInterpolator.h"
+#include "Tudat/Mathematics/Interpolators/lookupScheme.h"
 
 namespace tudat
 {
 namespace interpolators
 {
 
+//! Get value one.
+template< typename ScalarType >
+ScalarType getOne( )
+{
+  return static_cast< ScalarType >( 1.0 );
+}
+
 //! Class to perform Lagrange polynomial interpolation.
 /*!
  * Class to perform Lagrange polynomial interpolation from a set of independent and dependent 
  * values, as well as the order of the interpolation. Note that this class is optimized for many 
- * function calls to interpolate, since the denominators for the interpolations are pre-computed * for all interpolation intervals.
+ * function calls to interpolate, since the denominators for the interpolations are pre-computed 
+ * for all interpolation intervals.
  */
 template< typename IndependentVariableType, typename DependentVariableType, 
           typename ScalarType = IndependentVariableType >
@@ -92,11 +101,11 @@ public:
     LagrangeInterpolator( const std::vector< IndependentVariableType >& independentVariables,
                           const std::vector< DependentVariableType >& dependentVariables,
                           const int numberOfStages,
-                          const AvailableLookupScheme selectedLookupScheme = hunting_algorithm )
-        : independentValues_( independentVariables ),
-          dependentValues_( dependentVariables ),
-          numberOfStages_( numberOfStages )
+                          const AvailableLookupScheme selectedLookupScheme = huntingAlgorithm )
+        : numberOfStages_( numberOfStages )
     {
+        independentValues_ = independentVariables;
+        dependentValues_ = dependentVariables;          
         numberOfIndependentValues_ = static_cast< int >( independentValues_.size( ) );
 
         // Verify that the initialization variables are not empty.
@@ -110,7 +119,7 @@ public:
         if ( static_cast< int >( dependentValues_.size( ) ) != numberOfIndependentValues_ )
         {
             throw std::runtime_error( 
-                "ERROR: independent and dependent variables not of same size in Lagrange 
+                "ERROR: independent and dependent variables not of same size in Lagrange \
                     interpolator!" );
         }
 
@@ -143,7 +152,7 @@ public:
     LagrangeInterpolator( 
         const std::map< IndependentVariableType, DependentVariableType >& dataMap,
         const int numberOfStages,
-        const AvailableLookupScheme selectedLookupScheme = hunting_algorithm )
+        const AvailableLookupScheme selectedLookupScheme = huntingAlgorithm )
         : numberOfStages_( numberOfStages )
     {
         numberOfIndependentValues_ = dataMap.size( );
@@ -196,8 +205,8 @@ public:
      * determining the center (in case of a non-equispaced grid). If the required interpolating 
      * polynimial goes beyond the independent variable bondaries, a cubic spline with natural 
      * boundary conditions is used.
-     * \param independentVariableValue Value of independent variable at which interpolation is to 
-     *          take place.
+     * \param targetIndependentVariableValue Value of independent variable at which interpolation 
+     * is to take place.
      * \return Interpolated value of dependent variable.
      */
     DependentVariableType interpolate( 
@@ -237,7 +246,7 @@ public:
         else
         {
             // Initialize repeated numerator to 1.
-            ScalarType repeatedNumerator = mathematics::getOne< ScalarType >( );
+            ScalarType repeatedNumerator = getOne< ScalarType >( );
 
             // Check if requested independent variable is equal to data point.
             if ( independentValues_[ lowerEntry ] == targetIndependentVariableValue )
@@ -330,7 +339,7 @@ private:
             // Calculate all denominators for single interval.
             for ( int j = 0; j <= 2 * offsetEntries_ + 1; j++ )
             {
-                denominators[ i ][ j ] = mathematics::getOne< ScalarType >( );
+                denominators[ i ][ j ] = getOne< ScalarType >( );
                 for ( int k = 0; k <= 2 * offsetEntries_ + 1; k++ )
                 {
                     if ( k != j )
